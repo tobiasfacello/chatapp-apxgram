@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
+        "module": "ESNext",
+        "target": "ES2017",
         "moduleResolution": "Node",
         "resolveJsonModule": true,
         "strictNullChecks": false
