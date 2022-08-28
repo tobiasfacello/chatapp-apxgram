@@ -10,6 +10,7 @@ router.setRoutes([
 	{ path: "/register", component: "register-page" },
 	{ path: "/login", component: "login-page" },
 	{ path: "/lobby", component: "lobby-page" },
-	{ path: "/chat", component: "chat-page" },
+	{ path: "/chatroom/:roomId", component: "chatroom-page" },
 	{ path: "/history", component: "history-page" },
+	{ path: "/information", component: "information-page" },
 ]);

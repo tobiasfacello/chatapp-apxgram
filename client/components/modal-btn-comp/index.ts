@@ -19,15 +19,29 @@ class ModalBtnComponent extends HTMLElement {
                 background-color: rgba(255, 255, 255, 0.1);
             }
 
+            .modal-button:hover {
+                cursor: pointer;
+            }
+
+            .modal-button:active {
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+
             .button__icon {
                 width: 24px;
             }
 
             .modal {
-                width: 80%;
+                width: 330px;
                 border: none;
                 border-radius: 20px;
                 background: linear-gradient(180deg, #DFE0DF 0%, #FCFFDF 100%);
+            }
+
+            @media (min-width: 768px) {
+                .modal {
+                    width: 415px;
+                }
             }
 
             .modal__content {
@@ -78,7 +92,7 @@ class ModalBtnComponent extends HTMLElement {
             <div class="modal__content">
                 <div class="modal__content-text">
                     <subtitle-comp>Información</subtitle-comp>
-                    <small-text>ⒸTobías Facello - 2022</small-text>
+                    <small-text>&#169; Tobías Facello - 2022</small-text>
                 </div>
                 <div class="modal__content-buttons">
                     <btn-comp class="buttons__apxgram-btn" link="https://apx.school/" yellowBtn>¿Qué es apx?</btn-comp>
@@ -133,7 +147,14 @@ class ModalBtnComponent extends HTMLElement {
 				modalBtnEl.classList.contains("return-button") &&
 				!returnModalEl.hasAttribute("open")
 			) {
-				returnModalEl.showModal();
+				if (
+					location.pathname !== "/lobby" &&
+					location.pathname !== "/home"
+				) {
+					history.back();
+				} else {
+					returnModalEl.showModal();
+				}
 			}
 		});
 

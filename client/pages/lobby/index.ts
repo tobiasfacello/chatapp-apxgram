@@ -1,6 +1,11 @@
 import { Router } from "@vaadin/router";
 import { state } from "../../state";
 
+type ChatRoomResponse = {
+	response: Promise<any>;
+	status: number;
+};
+
 customElements.define(
 	"lobby-page",
 	class initLobbyPage extends HTMLElement {
@@ -18,7 +23,7 @@ customElements.define(
             Bienvenido de vuelta a Apxgram!
             </notification-comp>
             <notification-comp class="notification chatroom-notification" errorNotification notificationTitle="Falló el ingreso a la sala">
-            Asegurate de escribir bien el ID, de lo contrario, podes crear una nueva sala.
+            Asegurate de ingresar el ID correctamente, de lo contrario, podes crear una nueva sala.
             </notification-comp>
             <div class="div-container">
                 <section class="main-section">
@@ -30,10 +35,9 @@ customElements.define(
                 <section class="chat-form-section">
                     <form class="chatroom-form">
                         <div class="input-container">
-                            <label class="input__label">Ingresar a sala:</label>
-                            <input class="input__field" type="text" placeholder="ID de sala existente" value="${this.textContent}" required>
+                            <label class="input__label" for="chatroom">Ingresar a sala:</label>
+                            <input id="chatroom" name="chatroom" class="input__field" type="text" placeholder="ID de sala existente" value="${this.textContent}" required>
                         </div>
-
                         <div class="confirmation-container">
                             <input class="confirm-button yellow-btn" type="submit" value="Ingresar">
                         </div>
@@ -55,6 +59,12 @@ customElements.define(
                 justify-content: space-between;
                 align-items: center;
             }
+
+            @media (min-width: 768px) {
+                .div-container {
+                    padding-top: 15px;
+                }
+            } 
 
             .main-section {
                 display: flex;
@@ -97,16 +107,22 @@ customElements.define(
             }
 
             .input-container {
-                width: 100%;
+                width: 275px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 margin-top: 20px;
             }
+
+            @media (min-width: 768px) {
+                .input-container {
+                    width: 100%;
+                }
+            }
     
             .input__label {
-                width: 275px;
+                width: 100%;
                 justify-self: flex-start;
                 margin-bottom: 5px;
                 font-family: "Raleway", sans-serif;
@@ -116,7 +132,7 @@ customElements.define(
             }
     
             .input__field {
-                width: 275px;
+                width: 100%;
                 height: 50px;
                 font-family: "Raleway", sans-serif;
                 font-weight: 500;
@@ -126,6 +142,12 @@ customElements.define(
                 border-radius: 5px;
                 background-color: #222222;
                 color: #EEEEEE;
+            }
+
+            @media (min-width: 768px) {
+                .input__field {
+                    width: 380px;
+                }
             }
     
             .input__field:placeholcer {
@@ -147,6 +169,7 @@ customElements.define(
             .confirm-button,
             .create-room-button {
                 min-width: 275px;
+                max-width: 330px;
                 width: 100%;
                 height: 50px;
                 font-family: "Raleway", sans-serif;
@@ -157,6 +180,19 @@ customElements.define(
                 border-radius: 5px;
                 color: #272A32;
             }
+
+            .confirm-button:hover,
+            .create-room-button:hover {
+                cursor: pointer;
+            }
+
+            @media (min-width: 768px) {
+                .confirm-button,
+                .create-room-button {
+                    max-width: 380px;
+                    width: 380px;
+                }
+            }   
 
             .yellow-btn {
                 margin-bottom: 20px;
@@ -177,19 +213,37 @@ customElements.define(
 		}
 
 		addListeners() {
+			const bodyEl = document.querySelector("body");
+
+			const footerEl: HTMLElement = bodyEl.querySelector(".footer");
+
+			const chatIconEl: HTMLImageElement =
+				footerEl.shadowRoot.querySelector(".chat-icon");
+
+			const historyIconEl: HTMLImageElement =
+				footerEl.shadowRoot.querySelector(".history-icon");
+
 			const chatroomFormEl: HTMLFormElement =
 				this.querySelector(".chatroom-form");
+
 			const inputFieldEl: HTMLInputElement =
 				this.querySelector(".input__field");
+
+			const confirmButtonEl: HTMLButtonElement =
+				this.querySelector(".confirm-button");
+
 			const createChatRoomEl: HTMLButtonElement = this.querySelector(
 				".create-room-button"
 			);
+
 			const chatRoomNotificationEl: HTMLElement = this.querySelector(
 				".chatroom-notification"
 			);
+
 			const registerNotificationEl: HTMLElement = this.querySelector(
 				".register-notification"
 			);
+
 			const logInNotificationEl: HTMLElement = this.querySelector(
 				".login-notification"
 			);
@@ -215,12 +269,82 @@ customElements.define(
 			});
 
 			chatroomFormEl.addEventListener("submit", (e) => {
+				const target = e.target as HTMLFormElement;
 				e.preventDefault();
-				Router.go("/chat");
+				const roomId = target.chatroom.value;
+				const chatRoomAccessPromise: Promise<ChatRoomResponse> =
+					state.getFirestoreChatRoom({
+						id: roomId,
+					});
+
+				chatRoomAccessPromise.then((res) => {
+					if (res.status == 200) {
+						res.response.then((roomData) => {
+							const currentChatRoomId = roomId;
+							const secureChatRoomId = roomData.rtdbChatRoomId;
+
+							state.setCurrentChatRoomData({
+								currentChatRoomId,
+								secureChatRoomId,
+								messages: [],
+							});
+							state.setChatRoomHistory({
+								currentChatRoomId,
+								secureChatRoomId,
+								messages: [],
+							});
+							Router.go(`/chatroom/${currentChatRoomId}`);
+						});
+					} else if (res.status == 404) {
+						chatRoomNotificationEl.style.opacity = "1";
+						setTimeout(() => {
+							chatRoomNotificationEl.style.opacity = "0";
+						}, 6000);
+					}
+				});
 			});
 
+			//TODO: Crear todas las interacciones correspondientes al botón "Crear una nueva sala"
 			createChatRoomEl.addEventListener("click", () => {
-				Router.go("/chat");
+				const chatRoomCreationPromise: Promise<ChatRoomResponse> =
+					state.createNewChatRoom();
+
+				chatRoomCreationPromise.then((res) => {
+					if (res.status == 201) {
+						res.response.then((roomData) => {
+							const currentChatRoomId = roomData.roomId;
+							const secureChatRoomId = roomData.rtdbChatRoomId;
+
+							state.setCurrentChatRoomData({
+								currentChatRoomId,
+								secureChatRoomId,
+								messages: [],
+							});
+							state.setChatRoomHistory({
+								currentChatRoomId,
+								secureChatRoomId,
+								messages: [],
+							});
+							Router.go(`/chatroom/${currentChatRoomId}`);
+						});
+					} else if (res.status == 404) {
+						chatRoomNotificationEl.style.opacity = "1";
+						setTimeout(() => {
+							chatRoomNotificationEl.style.opacity = "0";
+						}, 6000);
+					}
+				});
+			});
+
+			chatIconEl.addEventListener("click", () => {
+				if (inputFieldEl.value == "") {
+					chatRoomNotificationEl.style.opacity = "1";
+					setTimeout(() => {
+						chatRoomNotificationEl.style.opacity = "0";
+					}, 6000);
+				} else {
+					confirmButtonEl.click();
+				}
 			});
 		}
 	}

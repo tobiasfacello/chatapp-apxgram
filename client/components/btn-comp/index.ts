@@ -20,6 +20,16 @@ class ButtonComponent extends HTMLElement {
 			color: #272A32;
         }
 
+		.button:hover {
+			cursor: pointer;
+		}
+
+		@media (min-width: 768px) {
+			.button {
+				width: 380px;
+			}
+		}
+
 		.white-btn {
 			background: linear-gradient(180deg, #FCFFDF 0%, #DFE0DF 100%);
 		}

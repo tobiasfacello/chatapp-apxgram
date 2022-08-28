@@ -17,6 +17,14 @@ class NotificationComponent extends HTMLElement {
             opacity: 1;
         }
 
+        @media (min-width: 768px) {
+            .popup-container {
+                left: 0;
+                right: 0;
+                width: 40%
+            }
+        }
+
         .popup-container.error-notification {
             background: linear-gradient(180deg, #C0564B 0%, #FF6767 100%);
         }

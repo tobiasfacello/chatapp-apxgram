@@ -22,10 +22,10 @@ class HeaderComponent extends HTMLElement {
 		this.shadow.innerHTML = `
         <header class="header">
 			<div class="header__button">
-				<modal-btn-comp returnBtn></modal-btn-comp>
+				<modal-btn-comp class="return-modal" returnBtn></modal-btn-comp>
 			</div>
 			<div class="header__button">
-				<modal-btn-comp optionsBtn></modal-btn-comp>
+				<modal-btn-comp class="options-modal" optionsBtn></modal-btn-comp>
 			</div>
         </header>
         `;

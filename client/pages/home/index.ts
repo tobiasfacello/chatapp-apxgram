@@ -5,7 +5,6 @@ customElements.define(
 	class initHomePage extends HTMLElement {
 		connectedCallback() {
 			this.render();
-			this.addListeners();
 		}
 
 		render() {
@@ -46,6 +45,14 @@ customElements.define(
                 padding-top: 30px;
             }
 
+            .signin-section {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
             .apx-logo {
                 width: 140px;
                 height: 60px;
@@ -75,7 +82,5 @@ customElements.define(
 
 			this.appendChild(style);
 		}
-
-		addListeners() {}
 	}
 );

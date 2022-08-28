@@ -14,6 +14,17 @@ class SmallTextComponent extends HTMLElement {
                 text-align: center;
                 color: #A5A5A5;
             }
+
+            @media (min-width: 768px) {
+                .small-text {
+                    width: 380px;
+                }
+            }
+
+            .small-text.centered {
+                width: 100%;
+                margin: 0;
+            }
         `;
 
 		this.render();
@@ -22,7 +33,9 @@ class SmallTextComponent extends HTMLElement {
 
 	render() {
 		this.shadow.innerHTML = `
-        <p class="small-text">
+        <p class="small-text 
+        ${this.hasAttribute("isCentered") ? "centered" : ""}
+        ">
             ${this.textContent}
         </p>
         `;

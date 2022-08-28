@@ -1,18 +1,12 @@
-import { state } from "../../state";
-
 customElements.define(
 	"login-page",
 	class initLoginPage extends HTMLElement {
 		connectedCallback() {
 			this.render();
-			this.addListeners();
 		}
 
 		render() {
 			this.innerHTML = `
-            <notification-comp class="notification" errorNotification notificationTitle="Falló el inicio de sesión">
-            Por favor, ingrese los datos solicitados para efectuar el inicio de sesión correctamente.
-            </notification-comp>
             <div class="div-container">
                 <section class="main-section">
                     <brand-comp></brand-comp>
@@ -36,6 +30,12 @@ customElements.define(
                 justify-content: space-between;
                 align-items: center;
             }
+
+            @media (min-width: 768px) {
+                .div-container {
+                    padding-top: 15px;
+                }
+            }   
 
             .main-section {
                 display: flex;
@@ -72,36 +72,9 @@ customElements.define(
                 font-weight: 600;
                 color: #FFFFFF;
             }
-
-            .notification {
-                opacity: 0;
-            }
             `;
 
 			this.appendChild(style);
-		}
-
-		addListeners() {
-			const loginFormEl: HTMLFormElement = this.querySelector(".form");
-
-			const shadowLoginFormEl: HTMLFormElement =
-				loginFormEl.shadowRoot.querySelector(".login-form");
-
-			const inputFieldsEl: NodeListOf<HTMLInputElement> =
-				shadowLoginFormEl.querySelectorAll(".input__field");
-
-			const popUpNotificationEl: HTMLElement =
-				this.querySelector(".notification");
-
-			inputFieldsEl.forEach((el) => {
-				el.addEventListener("invalid", () => {
-					state.setPreviousLocation(location.pathname);
-					popUpNotificationEl.style.opacity = "1";
-					setTimeout(() => {
-						popUpNotificationEl.style.opacity = "0";
-					}, 6000);
-				});
-			});
 		}
 	}
 );
