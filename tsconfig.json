@@ -5,5 +5,8 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "strictNullChecks": false
-    }
+    },
+    "files": [
+        "./server/index.ts"
+    ]
 }

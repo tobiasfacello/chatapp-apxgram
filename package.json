@@ -22,7 +22,7 @@
 		"dev:front": "parcel serve ./client/index.html",
 		"build:front": "parcel build ./client/index.html",
 		"dev:api": "nodemon --watch './server/index.ts' --exec 'ts-node ./server/dev.ts'",
-		"build:api": "tsc --project ./tsconfig.json ./server/index.ts",
+		"build:api": "tsc",
 		"build": "yarn build:front && yarn build:api",
 		"start": "node ./server/index.js"
 	},
