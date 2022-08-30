@@ -1,4 +1,4 @@
-import { firestoreDB, realtimeDB } from "./db";
+import { firestoreDB, realtimeDB } from "./db.js";
 import * as express from "express";
 import { v4 as uuidv4 } from "uuid";
 import * as path from "path";

@@ -1,9 +1,8 @@
 import * as admin from "firebase-admin";
-
-const firebaseKey = JSON.parse(process.env.API_CREDENTIALS);
+import * as firebaseKey from "./key.json";
 
 admin.initializeApp({
-	credential: admin.credential.cert(firebaseKey),
+	credential: admin.credential.cert(firebaseKey as any),
 	databaseURL: "https://apx-dwf-m6-firestore-default-rtdb.firebaseio.com",
 });
 
