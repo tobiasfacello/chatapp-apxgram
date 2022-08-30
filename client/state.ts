@@ -1,5 +1,7 @@
 import { realtimeDBClient } from "./db";
 
+const API_BASE_URL = "https://apxgram-chatapp.onrender.com";
+
 type SignUpData = {
 	name: string;
 	email: string;
@@ -143,7 +145,7 @@ export const state = {
 	},
 
 	async postSignUpForm(newUserData: SignUpData) {
-		const res = await fetch(`http://localhost:3000/users/sign-up`, {
+		const res = await fetch(`${API_BASE_URL}/users/sign-up`, {
 			method: "post",
 			headers: { "content-type": "application/json" },
 			body: JSON.stringify(newUserData),
@@ -152,7 +154,7 @@ export const state = {
 	},
 
 	async postSignInForm(userData: SignInData) {
-		const res = await fetch(`http://localhost:3000/users/sign-in`, {
+		const res = await fetch(`${API_BASE_URL}/users/sign-in`, {
 			method: "post",
 			headers: { "content-type": "application/json" },
 			body: JSON.stringify(userData),
@@ -161,25 +163,22 @@ export const state = {
 	},
 
 	async createNewChatRoom() {
-		const res = await fetch(`http://localhost:3000/chatrooms`, {
+		const res = await fetch(`${API_BASE_URL}/chatrooms`, {
 			method: "post",
 		});
 		return { response: res.json(), status: res.status };
 	},
 
 	async getFirestoreChatRoom(roomId: { id: string }) {
-		const res = await fetch(
-			`http://localhost:3000/fsdb/chatrooms/${roomId.id}`,
-			{
-				method: "get",
-			}
-		);
+		const res = await fetch(`${API_BASE_URL}/fsdb/chatrooms/${roomId.id}`, {
+			method: "get",
+		});
 		return { response: res.json(), status: res.status };
 	},
 
 	async getRealtimeChatRoom(secureRoomId: { id: "string" }) {
 		const res = await fetch(
-			`http://localhost:3000/rtdb/chatrooms/${secureRoomId.id}`,
+			`${API_BASE_URL}/rtdb/chatrooms/${secureRoomId.id}`,
 			{
 				method: "get",
 			}
@@ -191,7 +190,7 @@ export const state = {
 		secureRoomId: { id: "string" },
 		newChatRoomData: { message: Message }
 	) {
-		await fetch(`http://localhost:3000/rtdb/chatrooms/${secureRoomId.id}`, {
+		await fetch(`${API_BASE_URL}/rtdb/chatrooms/${secureRoomId.id}`, {
 			method: "post",
 			headers: { "content-type": "application/json" },
 			body: JSON.stringify(newChatRoomData),
