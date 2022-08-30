@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import * as firebaseKey from "./key.json";
+import * as firebaseKey from "../key.json";
 
 admin.initializeApp({
 	credential: admin.credential.cert(firebaseKey as any),
