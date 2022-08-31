@@ -10,6 +10,7 @@ class MessageComponent extends HTMLElement {
 
         .message-wrapper {
             width: 100%;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -37,9 +38,7 @@ class MessageComponent extends HTMLElement {
 
         .message__author {
             width: 100%;
-            margin: 0;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            margin: 5px 0;
             font-family: "Raleway", sans-serif;
             font-weight: 400;
             font-size: 12px;

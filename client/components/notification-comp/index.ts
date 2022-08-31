@@ -17,11 +17,20 @@ class NotificationComponent extends HTMLElement {
             opacity: 1;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 376px) {
             .popup-container {
                 left: 0;
                 right: 0;
-                width: 40%
+                width: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .popup-container {
+                top: 5%;
+                left: 0;
+                right: 0;
+                width: 40%;
             }
         }
 

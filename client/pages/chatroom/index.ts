@@ -1,5 +1,4 @@
 import { state } from "../../state";
-
 const sendIcon = require("url:../../assets/rocket.png");
 
 type Message = {

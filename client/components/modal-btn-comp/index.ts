@@ -1,5 +1,3 @@
-import { exit } from "process";
-
 const dotsIcon = require("url:../../assets/dots-vertical.svg");
 const backArrowIcon = require("url:../../assets/chevron-left.svg");
 class ModalBtnComponent extends HTMLElement {
@@ -36,6 +34,7 @@ class ModalBtnComponent extends HTMLElement {
                 border: none;
                 border-radius: 20px;
                 background: linear-gradient(180deg, #DFE0DF 0%, #FCFFDF 100%);
+                box-shadow: 0px 5px 300px #000, 0px -5px 300px #000;
             }
 
             @media (min-width: 768px) {
